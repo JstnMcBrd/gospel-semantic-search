@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Gospel Semantic Search</title>
+	<link rel="stylesheet" href="styles.css">
+	<link rel="icon" type="image/png" href="./icon.png">
+</head>
+<body>
+	<button id="theme-toggle" type="button" aria-label="Toggle theme">🌙</button>
+	<header>
+		<h1>Gospel Semantic Search</h1>
+	</header>
+	<main>
+		<video id="main-video" muted preload="auto">
+			<source src="header.mp4" type="video/mp4">
+			Your browser does not support the video tag.
+		</video>
+		<form id="search-form">
+			<input type="text" id="query" placeholder="Topics, keywords, etc..." required>
+			<button type="submit">Search</button>
+		</form>
+		<details id="advanced-options">
+			<summary>Advanced</summary>
+			<div class="advanced-content">
+				<div id="scripture-options">
+					<h4>Scriptures</h4>
+					<table>
+						<tr>
+							<td>
+								<label for="scripture-limit">Limit:</label>
+							</td>
+							<td>
+								<input class="text-input" id="scripture-limit" type="number" value="5">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label>Volumes:</label>
+							</td>
+							<td>
+								<div class="checkboxes">
+									<label><input type="checkbox" value="Old Testament" checked> Old Testament</label>
+									<label><input type="checkbox" value="New Testament" checked> New Testament</label>
+									<label><input type="checkbox" value="Book of Mormon" checked> Book of Mormon</label>
+									<label><input type="checkbox" value="Doctrine and Covenants" checked> Doctrine and Covenants</label>
+									<label><input type="checkbox" value="Pearl of Great Price" checked> Pearl of Great Price</label>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="genconf-options">
+					<h4>General Conference</h4>
+					<table>
+						<tr>
+							<td>
+								<label for="genconf-limit">Limit:</label>
+							</td>
+							<td>
+								<input class="text-input" id="genconf-limit" type="number" value="5">
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<label for="min-length">Minimum Length:</label>
+							</td>
+							<td>
+								<input class="text-input" id="min-length" type="number" value="100">
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</details>
+	</main>
+	<content>
+		<div class="results-container">
+			<div class="column" id="scriptures-column" style="display: none;">
+				<h2 class="column-title">Scriptures</h2>
+				<div class="loading" id="scriptures-loading" style="display: none;">Searching...</div>
+				<div class="error" id="scriptures-error" style="display: none;"></div>
+				<div class="results" id="scriptures-results" style="display: none;">
+					<p class="search-time" id="scriptures-search-time"></p>
+					<div class="results-list" id="scriptures-list"></div>
+				</div>
+			</div>
+			<div class="column" id="genconf-column" style="display: none;">
+				<h2 class="column-title">General Conference</h2>
+				<div class="loading" id="genconf-loading" style="display: none;">Searching...</div>
+				<div class="error" id="genconf-error" style="display: none;"></div>
+				<div class="results" id="genconf-results" style="display: none;">
+					<p class="search-time" id="genconf-search-time"></p>
+					<div class="results-list" id="genconf-list"></div>
+				</div>
+			</div>
+		</div>
+	</content>
+	<script src="dark-mode.mjs"></script>
+	<script src="search.mjs"></script>
+</body>
+</html>
