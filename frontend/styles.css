@@ -123,21 +123,19 @@ button[type="submit"]:hover {
 	width: 100%;
 }
 
-.advanced-content {
+#advanced-options-content {
 	width: 100%;
+	box-sizing: border-box;
 	margin-top: 5px;
 	padding: 10px;
 	display: flex;
+	flex-wrap: wrap;
 	border: 1px solid var(--border-color);
 	border-radius: 5px;
 	background-color: var(--secondary-bg);
 }
 
-#scripture-options {
-	flex: 1;
-}
-
-#genconf-options {
+.advanced-options-group {
 	flex: 1;
 }
 
