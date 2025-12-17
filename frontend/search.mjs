@@ -168,7 +168,7 @@ document.getElementById("search-form").addEventListener("submit", async function
 	}
 
 	const volumes = Array.from(
-		document.querySelectorAll('#advanced-options input[type="checkbox"]:checked'),
+		document.querySelectorAll('#scripture-volumes input[type="checkbox"]:checked'),
 	).map(cb => cb.value);
 
 	const genconfLimitValue = document.getElementById("genconf-limit").value;
