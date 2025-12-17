@@ -33,11 +33,13 @@ async function handleScriptures(query, limit, volumes) {
 	try {
 		const response = await fetch(url);
 		if (!response.ok) {
-			throw new Error(`API error: ${res.status}`);
+			const text = await response.text().catch(() => "");
+			throw new Error(`API Error ${response.status}: ${text}`);
 		}
 		const json = await response.json();
 		results = json.results;
 	} catch (error) {
+		console.error(error);
 		errorElement.style.display = "block";
 		errorElement.textContent = error.message;
 		return;
@@ -103,11 +105,13 @@ async function handleGenconf(query, limit, minLength) {
 	try {
 		const response = await fetch(url);
 		if (!response.ok) {
-			throw new Error(`API error: ${res.status}`);
+			const text = await response.text().catch(() => "");
+			throw new Error(`API Error ${response.status}: ${text}`);
 		}
 		const json = await response.json();
 		results = json.results;
 	} catch (error) {
+		console.error(error);
 		errorElement.style.display = "block";
 		errorElement.textContent = error.message;
 		return;
