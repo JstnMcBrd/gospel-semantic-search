@@ -7,13 +7,13 @@ async function handleScriptures(query, limit, volumes) {
 	const loadingElement = document.getElementById("scriptures-loading");
 	const resultsElement = document.getElementById("scriptures-results");
 	const searchTimeElement = document.getElementById("scriptures-search-time");
-	const resultListElement = document.getElementById("scriptures-list");
 
-	column.style.display = "block";
+	// Make column visible
+	column.style.display = "";
 
 	// Clear previous results
 	errorElement.style.display = "none";
-	searchTimeElement.textContent = "";
+	searchTimeElement.style.display = "none";
 	resultsElement.style.display = "none";
 
 	// Build request
@@ -25,7 +25,7 @@ async function handleScriptures(query, limit, volumes) {
 	}
 
 	// Start the timer
-	loadingElement.style.display = "block";
+	loadingElement.style.display = "";
 	const startTime = Date.now();
 
 	// Retrieve results / error handling
@@ -40,7 +40,7 @@ async function handleScriptures(query, limit, volumes) {
 		results = json.results;
 	} catch (error) {
 		console.error(error);
-		errorElement.style.display = "block";
+		errorElement.style.display = "";
 		errorElement.textContent = error.message;
 		return;
 	} finally {
@@ -50,11 +50,12 @@ async function handleScriptures(query, limit, volumes) {
 	// Report search time
 	const endTime = Date.now();
 	const searchTime = ((endTime - startTime) / 1000).toFixed(2);
+	searchTimeElement.style.display = "";
 	searchTimeElement.textContent = `Search completed in ${searchTime} seconds.`;
 
 	// Display results
-	resultsElement.style.display = "block";
-	resultListElement.innerHTML = "";
+	resultsElement.style.display = "";
+	resultsElement.innerHTML = "";
 	if (results && results.length > 0) {
 		for (const result of results) {
 			const div = document.createElement("div");
@@ -68,10 +69,10 @@ async function handleScriptures(query, limit, volumes) {
 				<p class="text">${result.text}</p>
 				<p class="score">Relevance Score: ${result.score.toFixed(2)}</p>
 			`;
-			resultListElement.appendChild(div);
+			resultsElement.appendChild(div);
 		}
 	} else {
-		resultListElement.innerHTML = "<p>No scriptures found.</p>";
+		resultsElement.innerHTML = "<p>No scriptures found.</p>";
 	}	
 }
 
@@ -81,13 +82,13 @@ async function handleGenconf(query, limit, minLength) {
 	const loadingElement = document.getElementById("genconf-loading");
 	const resultsElement = document.getElementById("genconf-results");
 	const searchTimeElement = document.getElementById("genconf-search-time");
-	const resultListElement = document.getElementById("genconf-list");
 
-	column.style.display = "block";
+	// Make column visible
+	column.style.display = "";
 
 	// Clear previous results
 	errorElement.style.display = "none";
-	searchTimeElement.textContent = "";
+	searchTimeElement.style.display = "none";
 	resultsElement.style.display = "none";
 
 	// Build request
@@ -97,7 +98,7 @@ async function handleGenconf(query, limit, minLength) {
 	url.searchParams.append("min_length", minLength);
 
 	// Start the timer
-	loadingElement.style.display = "block";
+	loadingElement.style.display = "";
 	const startTime = Date.now();
 
 	// Retrieve results / error handling
@@ -112,7 +113,7 @@ async function handleGenconf(query, limit, minLength) {
 		results = json.results;
 	} catch (error) {
 		console.error(error);
-		errorElement.style.display = "block";
+		errorElement.style.display = "";
 		errorElement.textContent = error.message;
 		return;
 	} finally {
@@ -122,11 +123,12 @@ async function handleGenconf(query, limit, minLength) {
 	// Report search time
 	const endTime = Date.now();
 	const searchTime = ((endTime - startTime) / 1000).toFixed(2);
+	searchTimeElement.style.display = "";
 	searchTimeElement.textContent = `Search completed in ${searchTime} seconds.`;
 
 	// Display results
-	resultsElement.style.display = "block";
-	resultListElement.innerHTML = "";
+	resultsElement.style.display = "";
+	resultsElement.innerHTML = "";
 	if (results && results.length > 0) {
 		for (const result of results) {
 			const div = document.createElement("div");
@@ -143,10 +145,10 @@ async function handleGenconf(query, limit, minLength) {
 				<p class="text">${result.text}</p>
 				<p class="score">Relevance Score: ${result.score.toFixed(2)}</p>
 			`;
-			resultListElement.appendChild(div);
+			resultsElement.appendChild(div);
 		}
 	} else {
-		resultListElement.innerHTML = "<p>No scriptures found.</p>";
+		resultsElement.innerHTML = "<p>No scriptures found.</p>";
 	}	
 }
 
