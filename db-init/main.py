@@ -1,6 +1,9 @@
+import csv
+from io import TextIOWrapper
 from os import getenv, path
+from urllib.request import urlopen
+
 from tqdm import tqdm
-import pandas as pd
 from fastembed import TextEmbedding
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, HnswConfigDiff, PointStruct
@@ -18,26 +21,13 @@ def embed_scriptures():
 
 	# Load data
 	url = "https://raw.githubusercontent.com/beandog/lds-scriptures/42e4bd73a216626b848cd1c75a79a8040799aca7/csv/lds-scriptures.csv"
-	df = pd.read_csv(url, keep_default_na=False)
+	with urlopen(url) as response:
+		rows = list(csv.DictReader(TextIOWrapper(response, encoding="utf-8")))
 
-	# Generate documents
-	df["id"] = [
-		int(f"{vl}{bk}{ch}{vr}")
-		for vl, bk, ch, vr in zip(df["volume_id"],
-					  df["book_id"],
-					  df["chapter_id"],
-					  df["verse_id"])
-	]
-	df["url"] = [
-		f"https://www.churchofjesuschrist.org/study/scriptures/{vl}/{bk}/{ch}?id=p{vr}#p{vr}"
-		for vl, bk, ch, vr in zip(df["volume_lds_url"],
-					  df["book_lds_url"],
-					  df["chapter_number"],
-					  df["verse_number"])
-	]
-	df["vector"] = list(tqdm(model.embed(df["scripture_text"], batch_size=1),
-				 total=len(df["scripture_text"]),
-				 desc="Embedding sciptures..."))
+	vectors = model.embed([row["scripture_text"] for row in rows], batch_size=1)
+	vectors = tqdm(vectors,
+				 total=len(rows),
+				 desc="Embedding sciptures...")
 
 	# Upload documents
 	client.create_collection(
@@ -50,17 +40,17 @@ def embed_scriptures():
 		collection_name="scriptures",
 		points=[
 			PointStruct(
-				id=row["id"],
-				vector=row["vector"],
+				id=int(f'{row["volume_id"]}{row["book_id"]}{row["chapter_id"]}{row["verse_id"]}'),
+				vector=vector,
 				payload={
 					"name": row["verse_title"],
 					"text": row["scripture_text"],
 					"volume": row["volume_title"],
 					"book": row["book_title"],
-					"url": row["url"],
+					"url": f'https://www.churchofjesuschrist.org/study/scriptures/{row["volume_lds_url"]}/{row["book_lds_url"]}/{row["chapter_number"]}?id=p{row["verse_number"]}#p{row["verse_number"]}',
 				},
 			)
-			for _, row in df.iterrows()
+			for row, vector in zip(rows, vectors)
 		],
 	)
 
@@ -74,15 +64,21 @@ def embed_genconf():
 	if not path.exists("./genconf.csv"):
 		print("Genconf dataset not found - cannot build genconf collection")
 		return
-	df = pd.read_csv("./genconf.csv")
+	with open("./genconf.csv", encoding="utf-8", newline="") as csv_file:
+		paragraphs = [
+			(index, row, text)
+			for index, (row, text) in enumerate(
+				(row, text)
+				for row in csv.DictReader(csv_file)
+				for text in row["text"].split("\n")
+			)
+			if text.strip()
+		]
 
-	# Generate documents
-	df["text"] = df["text"].str.split("\n")
-	df = df.explode("text", ignore_index=True)
-	df = df[df["text"].str.strip() != ""]
-	df["vector"] = list(tqdm(model.embed(df["text"], batch_size=1),
-				 total=len(df["text"]),
-				 desc="Embedding general conference..."))
+	vectors = model.embed([text for _, _, text in paragraphs], batch_size=1)
+	vectors = tqdm(vectors,
+				 total=len(paragraphs),
+				 desc="Embedding general conference...")
 
 	# Upload documents
 	client.create_collection(
@@ -95,18 +91,18 @@ def embed_genconf():
 		collection_name="genconf",
 		points=[
 			PointStruct(
-				id=i,
-				vector=row["vector"],
+				id=index,
+				vector=vector,
 				payload={
 					"url": row["url"],
 					"date": row["date"],
 					"title": row["title"],
 					"author": row["author-name"],
-					"text": row["text"],
-					"length": len(row["text"]),
+					"text": text,
+					"length": len(text),
 				},
 			)
-			for i, row in df.iterrows()
+			for (index, row, text), vector in zip(paragraphs, vectors)
 		],
 	)
 
