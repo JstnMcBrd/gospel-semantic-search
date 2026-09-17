@@ -17,8 +17,9 @@ def health():
 	try:
 		client.get_collections()
 		return "Connected", 200
-	except Exception as e:
-		return f"Error connecting: {str(e)}", 500
+	except Exception:
+		app.logger.exception("Database health check failed")
+		return "Unable to connect to the database", 500
 
 @app.route("/scriptures", methods=["GET"])
 def get_scriptures():
@@ -61,8 +62,9 @@ def get_scriptures():
 		]
 
 		return { "results": results }, 200
-	except Exception as e:
-		return f"Error retrieving scriptures: {str(e)}", 500
+	except Exception:
+		app.logger.exception("Scripture search failed")
+		return "Unable to retrieve scriptures", 500
 
 @app.route("/genconf", methods=["GET"])
 def get_genconf():
@@ -108,8 +110,9 @@ def get_genconf():
 		]
 
 		return { "results": results }, 200
-	except Exception as e:
-		return f"Error retrieving genconf: {str(e)}", 500
+	except Exception:
+		app.logger.exception("General conference search failed")
+		return "Unable to retrieve general conference results", 500
 
 if __name__ == "__main__":
 	app.run(host="::", port=5000)
