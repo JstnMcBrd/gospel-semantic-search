@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from os import getenv
 from qdrant_client import QdrantClient
 

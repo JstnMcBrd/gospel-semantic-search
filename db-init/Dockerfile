@@ -6,4 +6,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY genconf.csv .
 COPY main.py .
 
-CMD ["./main.py"]
+CMD ["python", "main.py"]
