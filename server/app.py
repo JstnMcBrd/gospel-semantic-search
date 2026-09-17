@@ -2,13 +2,11 @@
 
 from os import getenv
 from flask import Flask, request
-from flask_cors import CORS
 from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, MatchAny, Range
 from fastembed import TextEmbedding
 
 app = Flask(__name__)
-CORS(app)
 
 DB_HOST = getenv("DB_HOST", "db")
 DB_PORT = int(getenv("DB_PORT", 6333))
