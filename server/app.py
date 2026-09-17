@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from os import getenv
 from flask import Flask, request
 from qdrant_client import QdrantClient

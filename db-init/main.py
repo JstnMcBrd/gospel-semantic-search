@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from os import getenv, path
 from tqdm import tqdm
 import pandas as pd
