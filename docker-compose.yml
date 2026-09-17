@@ -2,7 +2,6 @@ name: gospel-semantic-search
 
 services:
   web:
-    container_name: web
     build:
       context: ./web
       dockerfile: Dockerfile
@@ -13,7 +12,6 @@ services:
     restart: unless-stopped
 
   server:
-    container_name: server
     build:
       context: ./server
       dockerfile: Dockerfile
@@ -27,7 +25,6 @@ services:
     restart: unless-stopped
 
   db:
-    container_name: db
     image: qdrant/qdrant:v1.16.2
     expose:
       - 6333 # REST API
@@ -37,7 +34,6 @@ services:
     restart: unless-stopped
 
   db-init:
-    container_name: db-init
     build:
       context: ./db-init
       dockerfile: Dockerfile
@@ -50,7 +46,6 @@ services:
 
   # Uncomment this if you want to run a database operation
   # db-op:
-  #   container_name: db-op
   #   build:
   #     context: ./db-op
   #     dockerfile: Dockerfile
