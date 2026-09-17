@@ -2,12 +2,15 @@
 
 *Final project for C S 574*
 
-![header](./frontend/header.png)
+![header](./web/public/header.png)
 
 ## Usage
 
-1. Run `backend/run.sh`
-2. Open `frontend/index.html`
+```sh
+docker compose up
+```
+
+View the web app at `http://localhost:8080`.
 
 ## Key NLP concepts
 
