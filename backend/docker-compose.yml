@@ -3,7 +3,7 @@ name: gospel-semantic-search-backend
 services:
   db:
     container_name: db
-    image: qdrant/qdrant:latest
+    image: qdrant/qdrant:v1.16.2
     ports:
       - "6333:6333" # REST API
       - "6334:6334" # gRPC API
