@@ -37,6 +37,11 @@ services:
     build:
       context: ./db-init
       dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ./genconf.csv
+        target: /genconf.csv
+        read_only: true
     depends_on:
       - db
     environment:
