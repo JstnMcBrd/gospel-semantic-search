@@ -1,12 +1,37 @@
-name: gospel-semantic-search-backend
+name: gospel-semantic-search
 
 services:
+  web:
+    container_name: web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:8080:80"
+    depends_on:
+      - server
+    restart: unless-stopped
+
+  server:
+    container_name: server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    expose:
+      - 5000
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=6333
+    restart: unless-stopped
+
   db:
     container_name: db
     image: qdrant/qdrant:v1.16.2
-    ports:
-      - "6333:6333" # REST API
-      - "6334:6334" # gRPC API
+    expose:
+      - 6333 # REST API
+      - 6334 # gRPC API
     volumes:
       - db-data:/qdrant/storage
     restart: unless-stopped
@@ -22,20 +47,6 @@ services:
       - DB_HOST=db
       - DB_PORT=6333
     restart: no
-
-  server:
-    container_name: server
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000" # http://localhost:5000
-    depends_on:
-      - db
-    environment:
-      - DB_HOST=db
-      - DB_PORT=6333
-    restart: unless-stopped
 
   # Uncomment this if you want to run a database operation
   # db-op:

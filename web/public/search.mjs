@@ -17,7 +17,7 @@ async function handleScriptures(query, limit, volumes) {
 	resultsElement.style.display = "none";
 
 	// Build request
-	const url = new URL("http://localhost:5000/scriptures");
+	const url = new URL("/api/scriptures", window.location.origin);
 	url.searchParams.append("query", query);
 	url.searchParams.append("limit", limit);
 	if (volumes.length < 5) {
@@ -92,7 +92,7 @@ async function handleGenconf(query, limit, minLength) {
 	resultsElement.style.display = "none";
 
 	// Build request
-	const url = new URL("http://localhost:5000/genconf");
+	const url = new URL("/api/genconf", window.location.origin);
 	url.searchParams.append("query", query);
 	url.searchParams.append("limit", limit);
 	url.searchParams.append("min_length", minLength);
