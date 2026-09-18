@@ -7,4 +7,4 @@ COPY app.py .
 
 EXPOSE 5000
 
-CMD ["python", "app.py"]
+CMD ["gunicorn", "--bind", "[::]:5000", "app:app"]
