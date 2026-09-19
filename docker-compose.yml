@@ -42,6 +42,8 @@ services:
         source: ./genconf.csv
         target: /genconf.csv
         read_only: true
+    profiles:
+      - seed # Exclude from normal startup
     depends_on:
       - db
     environment:
