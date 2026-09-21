@@ -54,25 +54,39 @@ async function handleScriptures(query, limit, volumes) {
 	searchTimeElement.textContent = `Search completed in ${searchTime} seconds.`;
 
 	// Display results
+	resultsElement.replaceChildren();
 	resultsElement.style.display = "";
-	resultsElement.innerHTML = "";
 	if (results && results.length > 0) {
 		for (const result of results) {
-			const div = document.createElement("div");
-			div.className = "result";
-			div.innerHTML = `
-				<h3 class="title">
-					<a target="_blank" href="${result.url}">
-						${result.name}
-					</a>
-				</h3>
-				<p class="text">${result.text}</p>
-				<p class="score">Relevance Score: ${result.score.toFixed(2)}</p>
-			`;
-			resultsElement.appendChild(div);
+			const divResult = document.createElement("div");
+			divResult.className = "result";
+
+			const h3Title = document.createElement("h3");
+			h3Title.className = "title";
+
+			const aLink = document.createElement("a");
+			aLink.target = "_blank";
+			aLink.href = result.url;
+			aLink.textContent = result.name;
+
+			const pText = document.createElement("p");
+			pText.className = "text";
+			pText.textContent = result.text;
+
+			const pScore = document.createElement("p");
+			pScore.className = "score";
+			pScore.textContent = `Relevance Score: ${result.score.toFixed(2)}`;
+			
+			h3Title.appendChild(aLink);
+			divResult.appendChild(h3Title);
+			divResult.appendChild(pText);
+			divResult.appendChild(pScore);
+			resultsElement.appendChild(divResult);
 		}
 	} else {
-		resultsElement.innerHTML = "<p>No scriptures found.</p>";
+		const noResults = document.createElement("p");
+		noResults.textContent = "No scriptures found.";
+		resultsElement.appendChild(noResults);
 	}	
 }
 
@@ -127,28 +141,44 @@ async function handleGenconf(query, limit, minLength) {
 	searchTimeElement.textContent = `Search completed in ${searchTime} seconds.`;
 
 	// Display results
+	resultsElement.replaceChildren();
 	resultsElement.style.display = "";
-	resultsElement.innerHTML = "";
 	if (results && results.length > 0) {
 		for (const result of results) {
-			const div = document.createElement("div");
-			div.className = "result";
-			div.innerHTML = `
-				<h3 class="title">
-					<a target="_blank" href="${result.url}">
-						${result.title}
-					</a>
-				</h3>
-				<p class="author-date">
-					${result.author ? `${result.author}, ` : ""}${result.date.split("T")[0]}
-				</p>
-				<p class="text">${result.text}</p>
-				<p class="score">Relevance Score: ${result.score.toFixed(2)}</p>
-			`;
-			resultsElement.appendChild(div);
+			const divResult = document.createElement("div");
+			divResult.className = "result";
+
+			const h3Title = document.createElement("h3");
+			h3Title.className = "title";
+
+			const aLink = document.createElement("a");
+			aLink.target = "_blank";
+			aLink.href = result.url;
+			aLink.textContent = result.title;
+
+			const pAuthorDate = document.createElement("p");
+			pAuthorDate.className = "author-date";
+			pAuthorDate.textContent = `${result.author ? `${result.author}, ` : ""}${result.date.split("T")[0]}`;
+
+			const pText = document.createElement("p");
+			pText.className = "text";
+			pText.textContent = result.text;
+
+			const pScore = document.createElement("p");
+			pScore.className = "score";
+			pScore.textContent = `Relevance Score: ${result.score.toFixed(2)}`;
+			
+			h3Title.appendChild(aLink);
+			divResult.appendChild(h3Title);
+			divResult.appendChild(pAuthorDate);
+			divResult.appendChild(pText);
+			divResult.appendChild(pScore);
+			resultsElement.appendChild(divResult);
 		}
 	} else {
-		resultsElement.innerHTML = "<p>No scriptures found.</p>";
+		const noResults = document.createElement("p");
+		noResults.textContent = "No scriptures found.";
+		resultsElement.appendChild(noResults);
 	}	
 }
 
