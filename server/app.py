@@ -34,7 +34,7 @@ def get_scriptures():
 			return "Parameter 'limit' cannot exceed 100", 400
 
 		volumes = request.args.get("volumes", None)
-		volumes = volumes.split(",") if volumes is not None else None
+		volumes = None if volumes is None else [] if volumes == "" else volumes.split(",")
 		for volume in volumes or []:
 			if volume not in VALID_VOLUMES:
 				return f"Invalid volume '{escape(volume)}'", 400
