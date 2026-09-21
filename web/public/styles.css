@@ -46,57 +46,70 @@ body {
 	min-height: 100vh;
 }
 
-#theme-toggle {
-	position: absolute;
-	top: 20px;
-	right: 20px;
-	background: none;
-	border: none;
-	font-size: 1.5em;
-	cursor: pointer;
-	border-radius: 50%;
-	transition: background-color 0.3s;
-	color: var(--text-color);
-}
-
-#theme-toggle:hover {
-	background-color: var(--secondary-bg);
-}
-
 header {
 	width: 100%;
 	box-sizing: border-box;
 	padding: 20px;
+	display: grid;
+	grid-template-columns: 32px auto 32px;
+}
+
+header div {
+	grid-column: 2;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 0.25rem;
-	justify-content: center;
+	gap: 0.5rem;
 }
 
-header h1 {
-	font-size: 2.5em;
-	margin: 0;
+header div h1 {
+	font-size: 1.5rem;
 	color: var(--title-color);
+	text-align: center;
+
+	/* Remove default h1 styles */
+	margin: 0;
 }
 
-header nav {
+header div nav {
 	font-size: 0.8rem;
 	color: var(--text-dim);
 }
 
-header nav a {
+header div nav a {
 	color: var(--text-muted);
 	text-decoration: none;
 }
 
-header nav a:hover {
+header div nav a:hover {
 	color: var(--text-color);
 	text-decoration: underline;
 }
 
-header .sep {
+header div nav .sep {
 	margin: 0 0.15rem;
+}
+
+header #theme-toggle {
+	grid-column: 3;
+	align-self: center;
+	justify-self: end;
+	font-size: 1.5em;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	color: var(--text-color);
+
+	/* Remove default button styles */
+	padding: 0;
+	background: none;
+	border: none;
+}
+
+header #theme-toggle:hover {
+	background-color: var(--secondary-bg);
 }
 
 main {
@@ -262,12 +275,10 @@ content {
 }
 
 @media (max-width: 600px) {
-	header h1 {
-		font-size: 2em;
-	}
 	main {
 		width: 100%;
-		padding: 20px;
+		padding-left: 20px;
+		padding-right: 20px;
 	}
 	#search-form {
 		flex-direction: column;
