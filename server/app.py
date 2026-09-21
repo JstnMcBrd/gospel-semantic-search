@@ -1,5 +1,6 @@
 from os import getenv
 from flask import Flask, request
+from html import escape
 from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, FieldCondition, MatchAny, Range
 from fastembed import TextEmbedding
@@ -36,7 +37,7 @@ def get_scriptures():
 		volumes = volumes.split(",") if volumes is not None else None
 		for volume in volumes or []:
 			if volume not in VALID_VOLUMES:
-				return f"Invalid volume '{volume}'", 400
+				return f"Invalid volume '{escape(volume)}'", 400
 
 		conditions = []
 		if volumes is not None:
