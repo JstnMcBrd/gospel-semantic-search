@@ -21,18 +21,22 @@ def health():
 		app.logger.exception("Database health check failed")
 		return "Unable to connect to the database", 500
 
+VALID_VOLUMES = set(["Old Testament", "New Testament", "Book of Mormon", "Doctrine and Covenants", "Pearl of Great Price"])
+
 @app.route("/scriptures", methods=["GET"])
 def get_scriptures():
 	try:
 		limit = int(request.args.get("limit", 5))
-		
-		query = request.args.get("query", None)
-		if query is None:
-			return "Parameter 'query' is required", 400
-		vector = list(model.embed(query))[0]
+		if limit < 1:
+			return "Parameter 'limit' must at least 1", 400
+		if limit > 100:
+			return "Parameter 'limit' cannot exceed 100", 400
 
 		volumes = request.args.get("volumes", None)
 		volumes = volumes.split(",") if volumes is not None else None
+		for volume in volumes or []:
+			if volume not in VALID_VOLUMES:
+				return f"Invalid volume '{volume}'", 400
 
 		conditions = []
 		if volumes is not None:
@@ -42,6 +46,14 @@ def get_scriptures():
 					match=MatchAny(any=volumes),
 				)
 			)
+
+		query = request.args.get("query", None)
+		query = query.strip() if query is not None else None
+		if query is None or query == "":
+			return "Parameter 'query' is required", 400
+		if len(query) > 1000:
+			return "Parameter 'query' cannot exceed 1000 characters", 400
+		vector = list(model.embed(query))[0]
 
 		response = client.query_points(
 			collection_name="scriptures",
@@ -70,13 +82,14 @@ def get_scriptures():
 def get_genconf():
 	try:
 		limit = int(request.args.get("limit", 5))
-		
-		query = request.args.get("query", None)
-		if query is None:
-			return "Parameter 'query' is required", 400
-		vector = list(model.embed(query))[0]
+		if limit < 1:
+			return "Parameter 'limit' must at least 1", 400
+		if limit > 100:
+			return "Parameter 'limit' cannot exceed 100", 400
 
 		min_length = int(request.args.get("min_length", 0))
+		if min_length < 0:
+			return "Parameter 'min_length' cannot be negative", 400
 
 		conditions = []
 		if min_length > 0:
@@ -88,6 +101,14 @@ def get_genconf():
 					),
 				),
 			)
+		
+		query = request.args.get("query", None)
+		query = query.strip() if query is not None else None
+		if query is None or query == "":
+			return "Parameter 'query' is required", 400
+		if len(query) > 1000:
+			return "Parameter 'query' cannot exceed 1000 characters", 400
+		vector = list(model.embed(query))[0]
 
 		response = client.query_points(
 			collection_name="genconf",
