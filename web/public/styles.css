@@ -12,6 +12,8 @@ body.light-mode {
 	--error-color: #e74c3c;
 	--loading-color: #3498db;
 	--muted-text: #7f8c8d;
+	--text-muted: #555555;
+	--text-dim: #777777;
 }
 
 body.dark-mode {
@@ -28,6 +30,8 @@ body.dark-mode {
 	--error-color: #ec7063;
 	--loading-color: #5dade2;
 	--muted-text: #b0b0b0;
+	--text-muted: #aaaaaa;
+	--text-dim: #888888;
 }
 
 body {
@@ -64,6 +68,9 @@ header {
 	box-sizing: border-box;
 	padding: 20px;
 	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.25rem;
 	justify-content: center;
 }
 
@@ -71,6 +78,25 @@ header h1 {
 	font-size: 2.5em;
 	margin: 0;
 	color: var(--title-color);
+}
+
+header nav {
+	font-size: 0.8rem;
+	color: var(--text-dim);
+}
+
+header nav a {
+	color: var(--text-muted);
+	text-decoration: none;
+}
+
+header nav a:hover {
+	color: var(--text-color);
+	text-decoration: underline;
+}
+
+header .sep {
+	margin: 0 0.15rem;
 }
 
 main {
