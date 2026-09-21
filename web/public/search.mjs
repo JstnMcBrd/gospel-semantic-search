@@ -159,11 +159,19 @@ document.getElementById("search-form").addEventListener("submit", async function
 	if (!query) {
 		return;
 	}
+	if (query.length > 1000) {
+		alert("Query cannot exceed 1000 characters.");
+		return;
+	}
 
 	const scriptureLimitValue = document.getElementById("scripture-limit").value;
 	const scriptureLimit = scriptureLimitValue ? parseInt(scriptureLimitValue) : 0;
 	if (scriptureLimit < 1) {
 		alert("Limit must be at least 1.");
+		return;
+	}
+	if (scriptureLimit > 100) {
+		alert("Limit cannot exceed 100.");
 		return;
 	}
 
@@ -175,6 +183,10 @@ document.getElementById("search-form").addEventListener("submit", async function
 	const genconfLimit = genconfLimitValue ? parseInt(genconfLimitValue) : 0;
 	if (genconfLimit < 1) {
 		alert("Limit must be at least 1.");
+		return;
+	}
+	if (genconfLimit > 100) {
+		alert("Limit cannot exceed 100.");
 		return;
 	}
 
