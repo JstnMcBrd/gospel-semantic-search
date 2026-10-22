@@ -25,7 +25,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: qdrant/qdrant:v1.16.2
+    image: qdrant/qdrant:v1.19.2
     expose:
       - 6333 # REST API
       - 6334 # gRPC API
